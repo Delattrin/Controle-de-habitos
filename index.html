@@ -2,30 +2,54 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Controle de Hábitos</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <title>Hábitos</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <div class="bg-grid"></div>
+
     <div class="app">
         <header>
-            <h1>Meus Hábitos</h1>
+            <div class="header-top">
+                <div class="header-title">
+                    <h1>Hábitos</h1>
+                    <span class="data-hoje" id="data-hoje"></span>
+                </div>
+                <div class="streak-box" id="streak-box">
+                    <span class="streak-num" id="streak-num">0</span>
+                    <span class="streak-icon">🔥</span>
+                    <span class="streak-label">dias</span>
+                </div>
+            </div>
+            <div class="progresso-wrap">
+                <div class="progresso-bar">
+                    <div class="progresso-fill" id="progresso-fill"></div>
+                </div>
+                <span class="progresso-txt" id="progresso-txt">0 / 0</span>
+            </div>
         </header>
 
         <main>
-            <div id="habit-input">
-                <input type="text" id="habit-name" placeholder="Novo hábito...">
-                <button id="add-habit">🔥 Adicionar</button>
-
+            <div class="input-wrap">
+                <input type="text" id="habit-name" placeholder="Novo hábito..." maxlength="40" autocomplete="off">
+                <button id="add-habit" aria-label="Adicionar hábito">+</button>
             </div>
 
             <ul id="habit-list"></ul>
+
+            <p class="vazio-msg" id="vazio-msg">Nenhum hábito ainda.<br>Adicione o primeiro! 👆</p>
         </main>
 
         <footer>
-            <p>🔥 foguinho em breve...</p>
+            <img src="foguinhos/roxo.png" alt="Foguinho" class="foguinho-neon" id="foguinho">
         </footer>
     </div>
+
+    <div class="toast" id="toast"></div>
 
     <script src="script.js"></script>
 </body>

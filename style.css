@@ -1,49 +1,399 @@
-*{
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: Arial, Helvetica, sans-serif;
+/* ============================================
+   VARIÁVEIS & RESET
+   ============================================ */
+:root {
+    --bg:        #0d0d14;
+    --bg2:       #13131f;
+    --surface:   #1a1a2e;
+    --border:    #2a2a45;
+    --accent:    #ff4444;
+    --accent2:   #ff7a00;
+    --purple:    #a855f7;
+    --text:      #f0f0f0;
+    --text-muted:#8888aa;
+    --done:      #3a3a55;
+    --radius:    14px;
+    --font-head: 'Syne', sans-serif;
+    --font-mono: 'Space Mono', monospace;
 }
-body{
-    background-color: #1e1e1e;
-    color: #ff4444;
+
+*, *::before, *::after {
+    margin: 0; padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* ============================================
+   BASE
+   ============================================ */
+body {
+    background-color: var(--bg);
+    color: var(--text);
+    font-family: var(--font-head);
+    min-height: 100dvh;
     display: flex;
     justify-content: center;
+    align-items: flex-start;
+    padding: 0 0 40px;
+    overflow-x: hidden;
+}
+
+/* Grade decorativa de fundo */
+.bg-grid {
+    position: fixed;
+    inset: 0;
+    background-image:
+        linear-gradient(rgba(255,68,68,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,68,68,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* ============================================
+   APP CONTAINER
+   ============================================ */
+.app {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 480px;
+    padding: 0 16px;
+}
+
+/* ============================================
+   HEADER
+   ============================================ */
+header {
+    padding: 32px 0 16px;
+}
+
+.header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 16px;
+}
+
+.header-title h1 {
+    font-family: var(--font-head);
+    font-size: 2.4rem;
+    font-weight: 800;
+    color: var(--text);
+    letter-spacing: -1px;
+    line-height: 1;
+}
+
+.data-hoje {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    margin-top: 4px;
+    display: block;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Streak box */
+.streak-box {
+    display: flex;
     align-items: center;
-    height: 100vh;
+    gap: 4px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 50px;
+    padding: 8px 14px;
+    transition: transform 0.2s;
 }
-input{
-    padding: 10px;
-    border: none;
-    border-radius: 5px;
-    margin-right: 10px;
-    border-color: #2b2b2b;
-    background-color: #2b2b2b;
-    color:white;
+
+.streak-box.bump {
+    animation: bump 0.35s ease;
 }
-button{
-    padding: 10px 20px;
+
+@keyframes bump {
+    0%   { transform: scale(1); }
+    50%  { transform: scale(1.18); }
+    100% { transform: scale(1); }
+}
+
+.streak-num {
+    font-family: var(--font-mono);
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--accent2);
+}
+
+.streak-icon { font-size: 1.1rem; }
+
+.streak-label {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+}
+
+/* Barra de progresso */
+.progresso-wrap {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.progresso-bar {
+    flex: 1;
+    height: 6px;
+    background: var(--surface);
+    border-radius: 99px;
+    overflow: hidden;
+}
+
+.progresso-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    border-radius: 99px;
+    width: 0%;
+    transition: width 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.progresso-txt {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    white-space: nowrap;
+}
+
+/* ============================================
+   INPUT
+   ============================================ */
+.input-wrap {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+input[type="text"] {
+    flex: 1;
+    padding: 14px 16px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    color: var(--text);
+    font-family: var(--font-head);
+    font-size: 0.95rem;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+input[type="text"]::placeholder { color: var(--text-muted); }
+
+input[type="text"]:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(255,68,68,0.12);
+}
+
+button#add-habit {
+    width: 50px;
+    height: 50px;
     border: none;
-    border-radius: 5px;
-    background-color: #ff4444;
+    border-radius: var(--radius);
+    background: var(--accent);
     color: white;
+    font-size: 1.6rem;
+    font-weight: 700;
     cursor: pointer;
-    box-shadow: #e63b3b 0px 5px 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+    box-shadow: 0 4px 20px rgba(255,68,68,0.3);
+    flex-shrink: 0;
 }
-button:hover {
-    background-color: #cc0000;
+
+button#add-habit:hover  { background: #cc0000; }
+button#add-habit:active { transform: scale(0.92); }
+
+/* ============================================
+   LISTA DE HÁBITOS
+   ============================================ */
+#habit-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
-@media (max-width: 600px) {
-    body {
-        flex-direction: column;
-    }
-    input {
-        margin-bottom: 10px;
-        margin-right: 0;
-    }
+
+.habit-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px 14px;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.25s, transform 0.15s;
+    user-select: none;
+    -webkit-user-select: none;
+    animation: slideIn 0.3s ease;
 }
-.feito {
+
+@keyframes slideIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.habit-item:active { transform: scale(0.98); }
+
+.habit-item.feito {
+    background: var(--done);
+    border-color: transparent;
+}
+
+/* Checkbox visual */
+.check-circle {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: 2px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: background 0.2s, border-color 0.2s, transform 0.2s;
+    font-size: 0.75rem;
+}
+
+.habit-item.feito .check-circle {
+    background: var(--accent);
+    border-color: var(--accent);
+    transform: scale(1.1);
+}
+
+.check-icon {
+    opacity: 0;
+    color: white;
+    font-weight: 700;
+    transition: opacity 0.15s;
+}
+.habit-item.feito .check-icon { opacity: 1; }
+
+/* Texto do hábito */
+.habit-nome {
+    flex: 1;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--text);
+    transition: color 0.2s, text-decoration 0.2s;
+}
+
+.habit-item.feito .habit-nome {
+    color: var(--text-muted);
     text-decoration: line-through;
-    color: gray;
-    opacity: 0.7;
 }
+
+/* Streak badge individual */
+.habit-streak {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--accent2);
+    background: rgba(255,122,0,0.1);
+    border-radius: 20px;
+    padding: 3px 8px;
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+.habit-streak.visivel { opacity: 1; }
+
+/* Botão deletar */
+.btn-deletar {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    font-size: 1rem;
+    cursor: pointer;
+    padding: 4px 6px;
+    border-radius: 6px;
+    transition: color 0.2s, background 0.2s;
+    flex-shrink: 0;
+    line-height: 1;
+    /* Evita que o clique no botão marque o hábito */
+    pointer-events: all;
+}
+
+.btn-deletar:hover {
+    color: var(--accent);
+    background: rgba(255,68,68,0.1);
+}
+
+/* ============================================
+   MENSAGEM VAZIO
+   ============================================ */
+.vazio-msg {
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    line-height: 1.7;
+    padding: 40px 0;
+    display: none;
+}
+
+.vazio-msg.visivel { display: block; }
+
+/* ============================================
+   FOOTER / FOGUINHO
+   ============================================ */
+footer {
+    text-align: center;
+    padding: 30px 0 0;
+}
+
+.foguinho-neon {
+    width: 80px;
+    height: auto;
+    filter: drop-shadow(0 0 8px rgba(168, 85, 247, 0.6));
+    animation: brilho 1.8s ease-in-out infinite;
+}
+
+@keyframes brilho {
+    0%, 100% { filter: drop-shadow(0 0 5px rgba(168, 85, 247, 0.4)); }
+    50%       { filter: drop-shadow(0 0 22px rgba(255, 50, 255, 0.9)); }
+}
+
+/* ============================================
+   TOAST NOTIFICATION
+   ============================================ */
+.toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(80px);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 10px 20px;
+    border-radius: 50px;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    z-index: 999;
+    opacity: 0;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    pointer-events: none;
+    white-space: nowrap;
+}
+
+.toast.show {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+}
+
+/* ============================================
+   ANIMAÇÃO DE CONCLUSÃO (marca feito)
+   ============================================ */
+@keyframes concluido {
+    0%   { transform: scale(1); }
+    40%  { transform: scale(1.04); }
+    100% { transform: scale(1); }
+}
+
+.habit-item.animar { animation: concluido 0.3s ease; }
